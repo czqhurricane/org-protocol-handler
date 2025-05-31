@@ -29,7 +29,7 @@
 			<string>EmacsClientCapture</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>org-protocol</string>
+				<string>NOTERPAGE</string>
 			</array>
 		</dict>
 	</array>
