@@ -47,7 +47,7 @@ def emacsclient_options(config):
     try:
         return list(dict(config.items("options")).values())
     except Exception:
-        return []
+        return ["--eval"]
 
 
 def is_old_style_link(url):
@@ -95,6 +95,20 @@ def get_title(url, is_old_style=True):
     return get_new_style_title(url)
 
 
+def get_noter_page(url):
+    url_fragments = six.moves.urllib.parse.urlparse(url)
+
+    # url_fragments is a 6 tuple; index 4 is the querystring
+    if not len(url_fragments[4]):
+        return ""
+
+    qs_parts = six.moves.urllib.parse.parse_qs(url_fragments[4])
+
+    if "pdf-tools" in list(qs_parts.keys()) and len(qs_parts["pdf-tools"]):
+        return qs_parts["pdf-tools"][0]
+
+    return ""
+
 def main():
     if len(sys.argv) < 2:
         sys.exit(1)
@@ -103,9 +117,9 @@ def main():
     raw_url = six.moves.urllib.parse.unquote(url)
     config = read_config()
     cmd = emacs_client_command(config)
-    cmd.append(raw_url)
+    cmd.append("(progn (org-link-open-from-string \"{0}\"))".format(get_noter_page(url)))
     subprocess.check_output(cmd)
-    print(get_title(url, is_old_style_link(url)))
+    print(get_noter_page(url))
 
 
 if __name__ == '__main__':
