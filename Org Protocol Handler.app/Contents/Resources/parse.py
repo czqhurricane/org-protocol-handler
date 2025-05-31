@@ -8,6 +8,9 @@ import sys
 
 import six.moves
 
+import sys
+sys.stdout = open("/tmp/org_protocol_output.log", "a")
+sys.stderr = sys.stdout
 
 def read_config():
     """Read and parse ~/.orgprotocol.ini if it exists."""
@@ -100,11 +103,15 @@ def main():
         sys.exit(1)
 
     url = sys.argv[1]
+
+    if url.startswith("noterpage:"):
+        url = "NOTERPAGE:" + url[len("noterpage:"):]
+
     config = read_config()
     cmd = emacs_client_command(config)
-    cmd.append("(progn (org-link-open-from-string \"[[{0}]]\"))".format(url))
+    cmd.append("(progn (org-link-open-from-string (url-unhex-string \"[[{0}]]\")))".format(url))
+    print(cmd)
     subprocess.check_output(cmd)
-    print(get_noter_page(url))
 
 
 if __name__ == '__main__':
