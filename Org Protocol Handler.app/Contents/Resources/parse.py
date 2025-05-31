@@ -109,7 +109,7 @@ def main():
 
     config = read_config()
     cmd = emacs_client_command(config)
-    cmd.append("(progn (org-link-open-from-string (url-unhex-string \"[[{0}]]\")))".format(url))
+    cmd.append("(progn (org-link-open-from-string (decode-coding-string (url-unhex-string \"[[{0}]]\") 'utf-8)))".format(url))
     print(cmd)
     subprocess.check_output(cmd)
 
