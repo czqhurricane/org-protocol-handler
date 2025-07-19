@@ -30,6 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>NOTERPAGE</string>
+				<string>ID</string>
 			</array>
 		</dict>
 	</array>
