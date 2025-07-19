@@ -106,6 +106,8 @@ def main():
 
     if url.startswith("noterpage:"):
         url = "NOTERPAGE:" + url[len("noterpage:"):]
+    elif url.startswith("ID:"):
+        url = "id:" + url[len("ID:"):]
 
     config = read_config()
     cmd = emacs_client_command(config)
